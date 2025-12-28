@@ -2,4 +2,10 @@
 authors = ["HqNw"]
 language = "en"
 src = "src"
-title = "honeybee_docs"
+title = "HoneyBee Documentation"
+description = "Complete documentation for HoneyBee - Distributed honeypot orchestration framework"
+
+[output.html]
+default-theme = "navy"
+git-repository-url = "https://github.com/H0neyBe/bee_docs"
+git-repository-icon = "fa-github"

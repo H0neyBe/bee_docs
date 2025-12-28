@@ -1,20 +1,16 @@
-# API Reference
+# HoneyBee Core API
 
-HoneyBee Core Backend API reference.
+Backend API and CLI reference for HoneyBee Core.
 
-## Base URL
+## REST API
 
-```
-http://localhost:9002
-```
-
-## Endpoints
+Base URL: `http://localhost:9002`
 
 ### Health Check
 
-Check if Core is running.
-
 **GET** `/health`
+
+Check if Core is running.
 
 **Response**:
 ```json
@@ -25,9 +21,9 @@ Check if Core is running.
 
 ### Get Nodes
 
-Get list of all registered nodes.
-
 **GET** `/api/v1/nodes`
+
+Get list of all registered nodes.
 
 **Response**:
 ```json
@@ -43,11 +39,11 @@ Get list of all registered nodes.
 }
 ```
 
-### Get Node Status
-
-Get status of a specific node.
+### Get Node
 
 **GET** `/api/v1/nodes/{node_id}`
+
+Get details of a specific node.
 
 **Response**:
 ```json
@@ -68,9 +64,9 @@ Get status of a specific node.
 
 ### Get Honeypots
 
-Get list of all honeypots across all nodes.
-
 **GET** `/api/v1/honeypots`
+
+Get list of all honeypots.
 
 **Response**:
 ```json
@@ -88,11 +84,15 @@ Get list of all honeypots across all nodes.
 
 ## WebSocket Proxy
 
-Real-time updates via WebSocket on port 9003.
+**URL**: `ws://localhost:9003`
 
-**Connect**: `ws://localhost:9003`
+Real-time updates via WebSocket. Connects to Core's backend and forwards Protocol v2 messages.
 
-**Messages**: JSON Protocol v2 messages
+**Message Format**: JSON Protocol v2 messages
+
+## CLI (Future)
+
+Command-line interface for managing Core (planned).
 
 ## Authentication
 
@@ -104,5 +104,6 @@ Rate limiting is planned for future versions.
 
 ## Next Steps
 
-- [Core API](../core/api.md) - Core API documentation
+- [API Reference](../reference/api.md) - Complete API reference
 - [Protocol Specification](../protocol/protocol.md) - Protocol details
+

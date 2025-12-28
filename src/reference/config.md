@@ -1,129 +1,87 @@
 # Configuration Reference
 
-Complete reference for all configuration options.
+Complete configuration reference for all HoneyBee components.
 
-See [Configuration Guide](../node/configuration.md) for usage examples.
+## HoneyBee Core Configuration
 
-## Configuration File Format
+File: `bee_config.toml`
 
-YAML format, default location: `configs/config.yaml`
+```toml
+[server]
+host = "127.0.0.1"        # Bind address
+node_port = 9001         # Port for node connections
+backend_port = 9002      # Port for backend API
+debug = false            # Enable debug mode
 
-## Complete Configuration
+[logging]
+level = "debug"          # Log level: trace, debug, info, warn, error
+folder = "logs"          # Log directory
+force_color = true       # Force colored output
+
+[proxy]
+enabled = true           # Enable WebSocket proxy
+host = "0.0.0.0"        # Proxy bind address
+port = 9003             # Proxy port
+```
+
+## HoneyBee Node Configuration
+
+File: `configs/config.yaml`
 
 ```yaml
 node:
-  name: "honeypot-01"
-  type: "Agent"
-  address: "0.0.0.0"
-  port: 8080
+  name: "honeybee-node-01"  # Unique node identifier
+  type: "Full"              # "Full" or "Agent"
+  address: "0.0.0.0"        # Address to report
+  port: 8080                # Port to report
 
 server:
-  address: "manager.example.com:9001"
-  heartbeat_interval: 30
-  reconnect_delay: 5
-  connection_timeout: 10
+  address: "127.0.0.1:9001"  # Core manager address
+  heartbeat_interval: 30     # Heartbeat interval (seconds)
+  reconnect_delay: 5         # Reconnect delay (seconds)
+  connection_timeout: 10      # Connection timeout (seconds)
 
 tls:
-  enabled: true
-  cert_file: "/etc/honeybee/certs/client.crt"
-  key_file: "/etc/honeybee/certs/client.key"
-  ca_file: "/etc/honeybee/certs/ca.crt"
-  insecure_skip_verify: false
-  server_name: "honeybee-manager"
+  enabled: true               # Enable TLS encryption
+  insecure_skip_verify: false # Skip certificate verification
+  server_name: "honeybee-manager"  # Server name for TLS
+  cert_file: ""              # Client certificate (optional)
+  key_file: ""               # Client key (optional)
+  ca_file: ""                # CA certificate (optional)
 
 auth:
-  totp_enabled: true
-  totp_secret_dir: "/var/lib/honeybee/secrets"
+  totp_enabled: true         # Enable TOTP authentication
+  totp_secret_dir: ""        # TOTP secret directory (optional)
 
 log:
-  level: "info"
-  format: "json"
-  file: "/var/log/honeybee/node.log"
+  level: "info"              # Log level: debug, info, warn, error
+  format: "text"             # Log format: text or json
+  file: ""                   # Log file path (optional)
+
+honeypot:
+  enabled: true              # Enable honeypot management
+  base_dir: "~/.honeybee/honeypots"  # Honeypot installation directory
+  default_ssh_port: 2222     # Default SSH port
+  default_telnet_port: 2223  # Default Telnet port
 ```
-
-## Configuration Sections
-
-### Node Configuration
-
-| Field | Type | Required | Default | Description |
-|-------|------|----------|---------|-------------|
-| `name` | string | No | hostname | Node identifier |
-| `type` | string | Yes | - | "Agent" or "Full" |
-| `address` | string | Yes | - | IP address to report |
-| `port` | uint16 | Yes | - | Port to report |
-
-### Server Configuration
-
-| Field | Type | Required | Default | Description |
-|-------|------|----------|---------|-------------|
-| `address` | string | Yes | - | Manager address (host:port) |
-| `heartbeat_interval` | int | No | 30 | Seconds between heartbeats |
-| `reconnect_delay` | int | No | 5 | Seconds before reconnect |
-| `connection_timeout` | int | No | 10 | Connection timeout seconds |
-
-### TLS Configuration
-
-| Field | Type | Required | Default | Description |
-|-------|------|----------|---------|-------------|
-| `enabled` | bool | Yes | - | Enable TLS encryption |
-| `cert_file` | string | No | - | Client certificate path |
-| `key_file` | string | No | - | Client key path |
-| `ca_file` | string | No | - | CA certificate path |
-| `insecure_skip_verify` | bool | No | false | Skip cert verification |
-| `server_name` | string | No | - | Expected server name |
-
-### Auth Configuration
-
-| Field | Type | Required | Default | Description |
-|-------|------|----------|---------|-------------|
-| `totp_enabled` | bool | Yes | - | Enable TOTP auth |
-| `totp_secret_dir` | string | No | ~/.config/honeybee | Secret storage directory |
-
-### Log Configuration
-
-| Field | Type | Required | Default | Description |
-|-------|------|----------|---------|-------------|
-| `level` | string | No | info | Log level (debug/info/warn/error) |
-| `format` | string | No | text | Log format (text/json) |
-| `file` | string | No | - | Log file path (stdout if not set) |
 
 ## Environment Variables
 
-Some settings can be overridden:
+### HoneyBee Node
 
-| Variable | Overrides | Example |
-|----------|-----------|---------|
-| `SERVER_ADDRESS` | `server.address` | `manager.example.com:9001` |
+- `HONEYBEE_EVENT_PORT` - Port for honeypot events (default: 9100)
+- `HONEYBEE_POT_ID` - Honeypot instance ID
+- `HONEYBEE_HONEYPOT_TYPE` - Honeypot type
 
-## Validation Rules
+### HoneyBee Core
 
-The node validates configuration on startup:
+- `RUST_LOG` - Rust logging level (default: info)
 
-- `node.type` must be "Agent" or "Full"
-- `server.address` must not be empty
-- `server.heartbeat_interval` must be > 0
-- `server.reconnect_delay` must be > 0
-- If `tls.cert_file` specified, `tls.key_file` required
-- `log.level` must be debug/info/warn/error
+## Configuration Validation
 
-## Command Line Flags
-
-| Flag | Description | Default |
-|------|-------------|---------|
-| `-config` | Path to config file | configs/config.yaml |
-| `-version` | Show version and exit | - |
-| `-gen-config` | Generate default config | - |
-
-## Configuration Templates
-
-See [Configuration Guide](../node/configuration.md) for profile templates:
-- Development profile
-- Production profile
-- Edge deployment profile
+Both Core and Node validate configuration on startup. Invalid configuration will cause the component to exit with an error.
 
 ## Next Steps
 
-- [Configuration Guide](../node/configuration.md) - Usage examples
-- [Security Guide](../node/security.md) - Security settings
-- [Deployment Guide](../node/deployment.md) - Production deployment
-
+- [Core Configuration](../core/configuration.md) - Core configuration details
+- [Node Configuration](../node/configuration.md) - Node configuration details
