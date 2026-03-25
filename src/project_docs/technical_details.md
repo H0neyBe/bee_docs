@@ -48,11 +48,6 @@ The **frontend dashboard** provides users with:
 # architecture
 
 ```mermaid
----
-config:
-  theme: neutral
-  layout: dagre
----
 flowchart LR
 	subgraph backend_thread["Backen_thread"]
         Backend_manager["Backend_manager"]
