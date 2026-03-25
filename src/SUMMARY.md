@@ -70,3 +70,8 @@ The honeypot repository and registry.
 - [Contributing](./development/contributing.md)
 - [Creating Custom Nodes](./development/custom-nodes.md)
 - [Testing](./development/testing.md)
+
+
+# reports
+
+- [technical details](./project_docs/technical_details.md)
