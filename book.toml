@@ -8,7 +8,7 @@ description = "Complete documentation for HoneyBee - Distributed honeypot orches
 [output.html]
 default-theme = "navy"
 git-repository-url = "https://github.com/H0neyBe/bee_docs"
-git-repository-icon = "fa-github"
+git-repository-icon = "fab-github"
 additional-js = ["mermaid.min.js", "mermaid-init.js"]
 
 [preprocessor]
